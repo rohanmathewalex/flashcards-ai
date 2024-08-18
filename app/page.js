@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, Card, CardContent } from "@mui/material";
+import Link from "next/link"; // Import Next.js Link component for navigation
 import Head from "next/head";
 import FlashOnIcon from '@mui/icons-material/FlashOn';
 import SchoolIcon from '@mui/icons-material/School';
@@ -24,10 +25,10 @@ export default function Home() {
 
           <SignedOut>
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button variant="outlined" color="inherit">
+              <Button variant="outlined" color="inherit" component={Link} href="/sign-in">
                 Login
               </Button>
-              <Button variant="contained" color="secondary">
+              <Button variant="contained" color="secondary" component={Link} href="/sign-up">
                 Sign Up
               </Button>
             </Box>
@@ -53,9 +54,9 @@ export default function Home() {
         }}
       >
         <Container maxWidth="md">
-          <Typography 
-            variant="h2" 
-            component="h1" 
+          <Typography
+            variant="h2"
+            component="h1"
             gutterBottom
             sx={{ fontWeight: 'bold', color: '#333', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
           >
@@ -64,7 +65,7 @@ export default function Home() {
           <Typography variant="h5" color="textSecondary" paragraph>
             The easiest way to create flashcards from your text using AI technology. Streamline your studying and maximize your efficiency.
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 3 }}>
+          <Button component={Link} href="/sign-in" variant="contained" color="primary" size="large" sx={{ mt: 3 }}>
             Get Started
           </Button>
         </Container>
@@ -111,12 +112,12 @@ export default function Home() {
 
       {/* Pricing Section */}
       <Container sx={{ mb: 8 }}>
-        <Typography 
-          variant="h3" 
-          component="h2" 
-          align="center" 
-          gutterBottom 
-          sx={{ fontWeight: 'bold', color: '#333', marginBottom: 4 }}  // Updated to h3 and added margin
+        <Typography
+          variant="h3"
+          component="h2"
+          align="center"
+          gutterBottom
+          sx={{ fontWeight: 'bold', color: '#333', marginBottom: 4 }}
         >
           Pricing
         </Typography>
@@ -138,7 +139,8 @@ export default function Home() {
                 <Typography variant="body1" color="textSecondary" paragraph>
                   Get started with basic flashcard creation and access to limited features.
                 </Typography>
-                <Button variant="outlined" color="primary" size="large">
+                {/* Link to Sign Up Page */}
+                <Button variant="outlined" color="primary" size="large" component={Link} href="/sign-up">
                   Sign Up
                 </Button>
               </CardContent>
@@ -157,7 +159,8 @@ export default function Home() {
                 <Typography variant="body1" color="textSecondary" paragraph>
                   Unlock all premium features, including unlimited flashcards, advanced AI capabilities, and priority support.
                 </Typography>
-                <Button variant="contained" color="secondary" size="large">
+                {/* Link to Sign Up Page */}
+                <Button variant="contained" color="secondary" size="large" component={Link} href="/sign-up">
                   Get Premium
                 </Button>
               </CardContent>
