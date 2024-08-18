@@ -1,9 +1,11 @@
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { AppBar, Toolbar, Typography, Button, Container, Box, Grid } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, Card, CardContent } from "@mui/material";
 import Head from "next/head";
-import FlashOnIcon from '@mui/icons-material/FlashOn';  // Icon for AI-powered feature
-import SchoolIcon from '@mui/icons-material/School';  // Icon for Smart Study Guides
-import TrackChangesIcon from '@mui/icons-material/TrackChanges';  // Icon for Tracking Progress
+import FlashOnIcon from '@mui/icons-material/FlashOn';
+import SchoolIcon from '@mui/icons-material/School';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import StarIcon from '@mui/icons-material/Star';
 
 export default function Home() {
   return (
@@ -40,7 +42,7 @@ export default function Home() {
       {/* Hero Section */}
       <Box
         sx={{
-          backgroundColor: '#f5f5f5',
+          backgroundColor: '#e3f2fd',
           minHeight: '70vh',
           display: 'flex',
           alignItems: 'center',
@@ -55,7 +57,7 @@ export default function Home() {
             variant="h2" 
             component="h1" 
             gutterBottom
-            sx={{ fontWeight: 'bold', color: '#333', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}  // Improved readability with shadow
+            sx={{ fontWeight: 'bold', color: '#333', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
           >
             Welcome to Flashcard SaaS
           </Typography>
@@ -72,8 +74,8 @@ export default function Home() {
       <Container sx={{ mt: 8, mb: 8 }}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>
-            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2 }}>
-              <FlashOnIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} /> {/* Icon for AI-powered feature */}
+            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2, backgroundColor: '#ffffff' }}>
+              <FlashOnIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
               <Typography variant="h6" gutterBottom>
                 AI-Powered Flashcards
               </Typography>
@@ -83,8 +85,8 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2 }}>
-              <SchoolIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} /> {/* Icon for Smart Study Guides */}
+            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2, backgroundColor: '#ffffff' }}>
+              <SchoolIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
               <Typography variant="h6" gutterBottom>
                 Smart Study Guides
               </Typography>
@@ -94,8 +96,8 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2 }}>
-              <TrackChangesIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} /> {/* Icon for Tracking Progress */}
+            <Box sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2, backgroundColor: '#ffffff' }}>
+              <TrackChangesIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
               <Typography variant="h6" gutterBottom>
                 Track Your Progress
               </Typography>
@@ -103,6 +105,63 @@ export default function Home() {
                 Keep track of what you’ve learned and what you need to review. Our system helps you monitor your progress and focus on what's important.
               </Typography>
             </Box>
+          </Grid>
+        </Grid>
+      </Container>
+
+      {/* Pricing Section */}
+      <Container sx={{ mb: 8 }}>
+        <Typography 
+          variant="h3" 
+          component="h2" 
+          align="center" 
+          gutterBottom 
+          sx={{ fontWeight: 'bold', color: '#333', marginBottom: 4 }}  // Updated to h3 and added margin
+        >
+          Pricing
+        </Typography>
+        <Typography variant="h6" color="textSecondary" align="center" paragraph>
+          Whether you're just starting out or need access to advanced features, we have a plan for you. Explore our pricing options below:
+        </Typography>
+
+        <Grid container spacing={4} justifyContent="center">
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2 }}>
+              <CardContent>
+                <AttachMoneyIcon sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
+                <Typography variant="h4" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  Basic Plan
+                </Typography>
+                <Typography variant="h5" color="textPrimary" gutterBottom>
+                  $0 / month
+                </Typography>
+                <Typography variant="body1" color="textSecondary" paragraph>
+                  Get started with basic flashcard creation and access to limited features.
+                </Typography>
+                <Button variant="outlined" color="primary" size="large">
+                  Sign Up
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <Card sx={{ textAlign: 'center', boxShadow: 3, padding: 3, borderRadius: 2 }}>
+              <CardContent>
+                <StarIcon sx={{ fontSize: 60, color: 'secondary.main', mb: 2 }} />
+                <Typography variant="h4" component="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  Premium Plan
+                </Typography>
+                <Typography variant="h5" color="textPrimary" gutterBottom>
+                  $7.99 / month
+                </Typography>
+                <Typography variant="body1" color="textSecondary" paragraph>
+                  Unlock all premium features, including unlimited flashcards, advanced AI capabilities, and priority support.
+                </Typography>
+                <Button variant="contained" color="secondary" size="large">
+                  Get Premium
+                </Button>
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
       </Container>
