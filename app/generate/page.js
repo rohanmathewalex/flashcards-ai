@@ -1,22 +1,19 @@
 'use client'
 
 import { useUser } from "@clerk/nextjs";
-import { Container, TextField, Typography, Box, Paper, Button, Modal, IconButton, AppBar, Toolbar, Grid, Card, CardActionArea, CardContent, DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog } from "@mui/material";
+import { Container, TextField, Typography, Box, Paper, Button, AppBar, Toolbar, Grid, Card, CardContent, CardActionArea, Modal, IconButton } from "@mui/material";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 import SaveIcon from '@mui/icons-material/Save';
-import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 import CloseIcon from '@mui/icons-material/Close';
-import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Generate() {
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { isLoaded, isSignedIn } = useUser();
     const [flashcards, setFlashcards] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [text, setText] = useState('');
     const [name, setName] = useState('');
     const [open, setOpen] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async () => {
         fetch('api/generate', {
@@ -40,13 +37,15 @@ export default function Generate() {
     const handleOpen = () => {
         setOpen(true);
     };
+
     const handleClose = () => {
         setOpen(false);
     };
 
     const saveFlashCards = async () => {
-        // Save flashcards logic here
-        console.log("Flashcards saved");
+        // Logic to save flashcards to the database
+        console.log("Flashcards saved:", name, flashcards);
+        handleClose();
     };
 
     return (
@@ -57,103 +56,135 @@ export default function Generate() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Flashcard SaaS
                     </Typography>
-                    <SignedIn>
-                        <UserButton />
-                    </SignedIn>
+                    {isSignedIn && <UserButton />}
                 </Toolbar>
             </AppBar>
 
             {/* Main Content */}
-            <Container maxWidth="md">
-                <Box sx={{ mt: 4, mb: 6, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 4 }}>
+            <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
+                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                    <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
                         Generate Flashcards
                     </Typography>
-
-                    <Paper sx={{ p: 4, width: "100%", textAlign: 'center', boxShadow: 3 }}>
-                        <TextField
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            label="Enter text"
-                            fullWidth
-                            multiline
-                            rows={4}
-                            variant="outlined"
-                            sx={{ mb: 2 }}
-                        />
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<FlipCameraAndroidIcon />}
-                            onClick={handleSubmit}
-                            sx={{ mt: 2 }}
-                        >
-                            Generate Flashcards
-                        </Button>
-                    </Paper>
                 </Box>
+
+                <Paper sx={{ p: 4, textAlign: 'center', boxShadow: 3, mb: 4 }}>
+                    <TextField
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        label="Enter text"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        variant="outlined"
+                        sx={{ mb: 2 }}
+                    />
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                        sx={{ mt: 2 }}
+                    >
+                        Generate Flashcards
+                    </Button>
+                </Paper>
 
                 {/* Flashcards Preview */}
                 {flashcards.length > 0 && (
-                    <Box sx={{ mt: 4 }}>
-                        <Typography variant="h5" gutterBottom>
-                            Flashcard Preview
-                        </Typography>
-                        <Grid container spacing={3}>
-                            {flashcards.map((flashcard, index) => (
-                                <Grid item xs={12} sm={6} md={4} key={index}>
-                                    <CardActionArea onClick={() => handleCardClick(index)}>
-                                        <Paper
+                    <>
+                        <Box sx={{ mt: 4 }}>
+                            <Typography variant="h5" gutterBottom>
+                                Flashcard Preview
+                            </Typography>
+                            <Grid container spacing={3}>
+                                {flashcards.map((flashcard, index) => (
+                                    <Grid item xs={12} sm={6} md={4} key={index}>
+                                        <Card
                                             sx={{
-                                                padding: 3,
-                                                height: '200px',
+                                                height: '300px',
                                                 display: 'flex',
-                                                justifyContent: 'center',
                                                 alignItems: 'center',
-                                                textAlign: 'center',
-                                                boxShadow: 3,
-                                                overflow: 'hidden',
-                                                backgroundColor: flipped[index] ? '#f5f5f5' : '#ffffff',
+                                                justifyContent: 'center',
+                                                perspective: '1000px',
+                                                cursor: 'pointer',
                                             }}
+                                            onClick={() => handleCardClick(index)}
                                         >
-                                            <Box
+                                            <CardActionArea
                                                 sx={{
-                                                    maxWidth: '100%',
+                                                    position: 'relative',
+                                                    width: '100%',
                                                     height: '100%',
-                                                    overflowY: 'auto', // Ensures long text is scrollable
-                                                    padding: 2,
-                                                    textAlign: 'center',
+                                                    transformStyle: 'preserve-3d',
+                                                    transition: 'transform 0.6s',
+                                                    transform: flipped[index] ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
                                                 }}
                                             >
-                                                <Typography
-                                                    variant="h6"
+                                                {/* Front of the Card */}
+                                                <CardContent
                                                     sx={{
-                                                        wordWrap: 'break-word', // Ensures long words don't overflow
+                                                        position: 'absolute',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        backfaceVisibility: 'hidden',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        padding: 2,
+                                                        textAlign: 'center',
+                                                        boxShadow: 3,
                                                     }}
                                                 >
-                                                    {flipped[index] ? flashcard.back : flashcard.front}
-                                                </Typography>
-                                            </Box>
-                                        </Paper>
-                                    </CardActionArea>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
+                                                    <Typography variant="h6" component="div" sx={{ overflowWrap: 'break-word' }}>
+                                                        {flashcard.front}
+                                                    </Typography>
+                                                </CardContent>
+
+                                                {/* Back of the Card */}
+                                                <CardContent
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        backfaceVisibility: 'hidden',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        padding: 2,
+                                                        textAlign: 'center',
+                                                        boxShadow: 3,
+                                                        transform: 'rotateY(180deg)',
+                                                    }}
+                                                >
+                                                    <Typography variant="h6" component="div" sx={{ overflowWrap: 'break-word' }}>
+                                                        {flashcard.back}
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
+
+                        {/* Save Flashcards Button */}
+                        <Box sx={{ textAlign: 'center', mt: 4 }}>
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                startIcon={<SaveIcon />}
+                                onClick={handleOpen}
+                            >
+                                Save Flashcards
+                            </Button>
+                        </Box>
+                    </>
                 )}
 
                 {/* Save Flashcards Modal */}
-                <Box sx={{ textAlign: 'center', mt: 4 }}>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        startIcon={<SaveIcon />}
-                        onClick={handleOpen}
-                    >
-                        Save Flashcards
-                    </Button>
-                </Box>
-
                 <Modal
                     open={open}
                     onClose={handleClose}
