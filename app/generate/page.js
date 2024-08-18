@@ -1,14 +1,13 @@
 'use client'
 
 import { useUser } from "@clerk/nextjs";
-import { Container, TextField, Typography, Box, Paper, Button, Modal, IconButton, AppBar, Toolbar, Grid, CardActionArea, CardContent, DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog } from "@mui/material"; // Added Grid here
+import { Container, TextField, Typography, Box, Paper, Button, Modal, IconButton, AppBar, Toolbar, Grid, Card, CardActionArea, CardContent, DialogTitle, DialogContent, DialogContentText, DialogActions, Dialog } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SaveIcon from '@mui/icons-material/Save';
 import FlipCameraAndroidIcon from '@mui/icons-material/FlipCameraAndroid';
 import CloseIcon from '@mui/icons-material/Close';
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Link from "next/link";
+import { SignedIn, UserButton } from "@clerk/nextjs";
 
 export default function Generate() {
     const { isLoaded, isSignedIn, user } = useUser();
@@ -46,7 +45,8 @@ export default function Generate() {
     };
 
     const saveFlashCards = async () => {
-        // Save flashcards logic
+        // Save flashcards logic here
+        console.log("Flashcards saved");
     };
 
     return (
@@ -57,7 +57,6 @@ export default function Generate() {
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         Flashcard SaaS
                     </Typography>
-
                     <SignedIn>
                         <UserButton />
                     </SignedIn>
@@ -80,9 +79,7 @@ export default function Generate() {
                             multiline
                             rows={4}
                             variant="outlined"
-                            sx={{
-                                mb: 2,
-                            }}
+                            sx={{ mb: 2 }}
                         />
                         <Button
                             variant="contained"
@@ -96,64 +93,54 @@ export default function Generate() {
                     </Paper>
                 </Box>
 
-                <Box sx={{ mt: 4 }}>
-                    {flashcards.length > 0 && (
-                        <Box sx={{ mt: 4 }}>
-                            <Typography variant="h5">Flashcard Preview</Typography>
-                            <Grid container spacing={3}>
-                                {flashcards.map((flashcard, index) => (
-                                    <Grid item xs={12} sm={6} md={4} key={index}>
-                                        <CardActionArea onClick={() => handleCardClick(index)}>
-                                            <CardContent>
-                                                <Box
+                {/* Flashcards Preview */}
+                {flashcards.length > 0 && (
+                    <Box sx={{ mt: 4 }}>
+                        <Typography variant="h5" gutterBottom>
+                            Flashcard Preview
+                        </Typography>
+                        <Grid container spacing={3}>
+                            {flashcards.map((flashcard, index) => (
+                                <Grid item xs={12} sm={6} md={4} key={index}>
+                                    <CardActionArea onClick={() => handleCardClick(index)}>
+                                        <Paper
+                                            sx={{
+                                                padding: 3,
+                                                height: '200px',
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                textAlign: 'center',
+                                                boxShadow: 3,
+                                                overflow: 'hidden',
+                                                backgroundColor: flipped[index] ? '#f5f5f5' : '#ffffff',
+                                            }}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    maxWidth: '100%',
+                                                    height: '100%',
+                                                    overflowY: 'auto', // Ensures long text is scrollable
+                                                    padding: 2,
+                                                    textAlign: 'center',
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="h6"
                                                     sx={{
-                                                        perspective: '1000px',
-                                                        '& > div': {
-                                                            transition: 'transform 0.6s',
-                                                            transformStyle: 'preserve-3d',
-                                                            position: 'relative',
-                                                            width: '100%',
-                                                            height: '200px',
-                                                            boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-                                                            transform: flipped[index]
-                                                                ? 'rotateY(180deg)'
-                                                                : 'rotateY(0deg)',
-                                                        },
-                                                        '& > div > div': {
-                                                            position: 'absolute',
-                                                            width: '100%',
-                                                            height: '100%',
-                                                            backfaceVisibility: "hidden",
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            alignItems: 'center',
-                                                            padding: 2,
-                                                            boxSizing: 'border-box'
-                                                        },
-                                                        '& > div > div:nth-of-type(2)': {
-                                                            transform: 'rotateY(180deg)',
-                                                        },
+                                                        wordWrap: 'break-word', // Ensures long words don't overflow
                                                     }}
                                                 >
-                                                    <div>
-                                                        <Typography variant="h5" component="div">
-                                                            {flashcard.front}
-                                                        </Typography>
-                                                    </div>
-                                                    <div>
-                                                        <Typography variant="h5" component="div">
-                                                            {flashcard.back}
-                                                        </Typography>
-                                                    </div>
-                                                </Box>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
-                    )}
-                </Box>
+                                                    {flipped[index] ? flashcard.back : flashcard.front}
+                                                </Typography>
+                                            </Box>
+                                        </Paper>
+                                    </CardActionArea>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
 
                 {/* Save Flashcards Modal */}
                 <Box sx={{ textAlign: 'center', mt: 4 }}>
@@ -200,30 +187,6 @@ export default function Generate() {
                         </Button>
                     </Paper>
                 </Modal>
-
-                {/* Save Dialog */}
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Save Flashcards</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Please enter a name for your flashcards collection.
-                        </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin='dense'
-                            label="Collection Name"
-                            type="text"
-                            fullWidth
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            variant="outlined"
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={saveFlashCards}>Save</Button>
-                    </DialogActions>
-                </Dialog>
             </Container>
 
             {/* Footer */}
