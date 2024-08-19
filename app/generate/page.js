@@ -88,7 +88,7 @@ export default function Generate() {
                 return;
             }
 
-            collections.push({ name });
+            collections.push({ name, flashcards }); // Ensure flashcards are saved with the collection
 
             batch.set(userDocRef, { flashcards: collections }, { merge: true });
 
