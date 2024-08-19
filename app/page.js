@@ -1,3 +1,4 @@
+'use client';
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { AppBar, Toolbar, Typography, Button, Container, Box, Grid, Card, CardContent } from "@mui/material";
 import Link from "next/link"; // Import Next.js Link component for navigation
@@ -7,8 +8,33 @@ import SchoolIcon from '@mui/icons-material/School';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import StarIcon from '@mui/icons-material/Star';
+import getStripe from "@/utils/get-stripe";
+
 
 export default function Home() {
+  const handleSubmit = async () => {
+    const checkoutSession = await fetch('/api/checkout_session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        origin: 'http://localhost:3000'
+      },
+    })
+
+    const checkoutSessionJson = await checkoutSession.json()
+    if (checkoutSession.statusCode === 500) {
+      console.log(error(checkoutSession.message))
+      return
+    }
+
+    const stripe = await getStripe()
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: checkoutSessionJson.id,
+    })
+    if (error) {
+      console.warn(error.message)
+    }
+  }
   return (
     <>
       <Head>
@@ -134,7 +160,7 @@ export default function Home() {
                   Basic Plan
                 </Typography>
                 <Typography variant="h5" color="textPrimary" gutterBottom>
-                  $0 / month
+                  $4.99 / month
                 </Typography>
                 <Typography variant="body1" color="textSecondary" paragraph>
                   Get started with basic flashcard creation and access to limited features.
@@ -154,13 +180,13 @@ export default function Home() {
                   Premium Plan
                 </Typography>
                 <Typography variant="h5" color="textPrimary" gutterBottom>
-                  $7.99 / month
+                  $8.99 / month
                 </Typography>
                 <Typography variant="body1" color="textSecondary" paragraph>
                   Unlock all premium features, including unlimited flashcards, advanced AI capabilities, and priority support.
                 </Typography>
                 {/* Link to Sign Up Page */}
-                <Button variant="contained" color="secondary" size="large" component={Link} href="/sign-up">
+                <Button variant="contained" color="secondary" size="large" onClick={handleSubmit} >
                   Get Premium
                 </Button>
               </CardContent>
