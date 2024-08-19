@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Flashcard SaaS</title>
+        <title>FlashMind</title>
         <meta name="description" content="Create flashcards from your text" />
       </Head>
 
@@ -46,7 +46,7 @@ export default function Home() {
       <AppBar position="static" style={{ width: "100%" }}>
         <Toolbar>
           <Typography variant="h6" style={{ flexGrow: 1 }}>
-            Flashcard SaaS
+            FlashMind
           </Typography>
 
           <SignedOut>
@@ -86,7 +86,7 @@ export default function Home() {
             gutterBottom
             sx={{ fontWeight: 'bold', color: '#333', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }}
           >
-            Welcome to Flashcard SaaS
+            Welcome to FlashMind
           </Typography>
           <Typography variant="h5" color="textSecondary" paragraph>
             The easiest way to create flashcards from your text using AI technology. Streamline your studying and maximize your efficiency.
@@ -198,7 +198,7 @@ export default function Home() {
       {/* Footer */}
       <Box sx={{ backgroundColor: '#3f51b5', color: '#fff', padding: 2, textAlign: 'center' }}>
         <Typography variant="body2">
-          © 2024 Flashcard SaaS. All rights reserved.
+          © 2024 FlashMind. All rights reserved.
         </Typography>
       </Box>
     </>

@@ -130,7 +130,7 @@ export default function Generate() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Flashcard SaaS
+                        FlashMind
                     </Typography>
                     {isSignedIn && <UserButton />}
                 </Toolbar>
@@ -435,7 +435,7 @@ export default function Generate() {
             {/* Footer */}
             <Box sx={{ backgroundColor: '#3f51b5', color: '#fff', padding: 2, textAlign: 'center', mt: 4 }}>
                 <Typography variant="body2">
-                    © 2024 Flashcard SaaS. All rights reserved.
+                    © 2024 FlashMind. All rights reserved.
                 </Typography>
             </Box>
         </>

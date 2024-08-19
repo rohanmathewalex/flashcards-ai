@@ -35,7 +35,7 @@ export default function PricingPage() {
             <AppBar position="static" sx={{ backgroundColor: "#3f51b5" }}>
                 <Toolbar>
                     <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                        Flashcard SaaS
+                        FlashMind
                     </Typography>
                     <Button color="inherit" component={Link} href="/">
                         Home
@@ -106,7 +106,7 @@ export default function PricingPage() {
             {/* Footer */}
             <Box sx={{ backgroundColor: '#3f51b5', color: '#fff', padding: 2, textAlign: 'center' }}>
                 <Typography variant="body2">
-                    © 2024 Flashcard SaaS. All rights reserved.
+                    © 2024 FlashMind. All rights reserved.
                 </Typography>
             </Box>
         </>

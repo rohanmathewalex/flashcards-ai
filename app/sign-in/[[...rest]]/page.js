@@ -16,7 +16,7 @@ export default function SignInPage() {
               flexGrow: 1,
             }}
           >
-            Flashcard SaaS
+            FlashMind
           </Typography>
           <Button color="inherit" component={Link} href="/sign-in">
             Login
@@ -43,7 +43,7 @@ export default function SignInPage() {
             Access your account and manage your flashcards with ease.
           </Typography>
           <Box sx={{ width: '100%', mt: 4 }}>
-            <SignIn routing="hash"forceRedirectUrl="/generate"/> {/* Added routing="hash" */}
+            <SignIn routing="hash" forceRedirectUrl="/generate" /> {/* Added routing="hash" */}
           </Box>
         </Box>
       </Container>
