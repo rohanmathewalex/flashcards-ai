@@ -12,9 +12,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { doc, collection, setDoc, getDoc, writeBatch } from "firebase/firestore";
 import { db } from '../../firebase';
 import { TabContext, TabPanel } from '@mui/lab';
+import { useRouter } from "next/navigation";
 
 export default function Generate() {
     const { isLoaded, isSignedIn, user } = useUser();
+    const router = useRouter(); // Use Next.js router for navigation
     const [flashcards, setFlashcards] = useState([]);
     const [flipped, setFlipped] = useState([]);
     const [text, setText] = useState('');
@@ -24,6 +26,8 @@ export default function Generate() {
     const [savedCollections, setSavedCollections] = useState([]);
     const [tabValue, setTabValue] = useState("1"); // Control tabs for viewing or generating flashcards
     const [selectedCollection, setSelectedCollection] = useState(null);
+    const [flashcardCount, setFlashcardCount] = useState(0); // Track number of flashcards generated
+    const FLASHCARD_LIMIT = 5; // Limit to 5 flashcards for free
 
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
@@ -43,7 +47,15 @@ export default function Generate() {
             },
         })
             .then((res) => res.json())
-            .then((data) => setFlashcards(data));
+            .then((data) => {
+                setFlashcards(data);
+                setFlashcardCount(prevCount => prevCount + 1); // Increment flashcard count
+
+                // Redirect to payment page after generating the limit of flashcards
+                if (flashcardCount + 1 >= FLASHCARD_LIMIT) {
+                    router.push('/pricing'); // Replace with your payment or pricing page
+                }
+            });
     };
 
     const handleCardClick = (id) => {
