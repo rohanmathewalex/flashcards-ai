@@ -35,6 +35,7 @@ export default function Home() {
       console.warn(error.message)
     }
   }
+  
   return (
     <>
       <Head>
@@ -129,7 +130,7 @@ export default function Home() {
                 Track Your Progress
               </Typography>
               <Typography variant="body1" color="textSecondary">
-                Keep track of what you’ve learned and what you need to review. Our system helps you monitor your progress and focus on what's important.
+                Keep track of what you&apos;ve learned and what you need to review. Our system helps you monitor your progress and focus on what&apos;s important.
               </Typography>
             </Box>
           </Grid>
@@ -148,7 +149,7 @@ export default function Home() {
           Pricing
         </Typography>
         <Typography variant="h6" color="textSecondary" align="center" paragraph>
-          Whether you're just starting out or need access to advanced features, we have a plan for you. Explore our pricing options below:
+          Whether you&apos;re just starting out or need access to advanced features, we have a plan for you. Explore our pricing options below:
         </Typography>
 
         <Grid container spacing={4} justifyContent="center">
